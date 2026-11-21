@@ -17,8 +17,8 @@ if ($action === 'login' && $method === 'POST') {
 
     try {
         $db = get_db();
-        $stmt = $db->prepare('SELECT id, username, email, password_hash, full_name FROM users WHERE username = :ident OR email = :ident LIMIT 1');
-        $stmt->execute([':ident' => $identifier]);
+        $stmt = $db->prepare('SELECT id, username, email, password_hash, full_name FROM users WHERE username = :u OR email = :e LIMIT 1');
+        $stmt->execute([':u' => $identifier, ':e' => $identifier]);
         $user = $stmt->fetch();
 
         if (!$user || !password_verify($password, $user['password_hash'])) {
