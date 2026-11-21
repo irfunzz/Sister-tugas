@@ -24,14 +24,26 @@ if (file_exists(__DIR__ . '/.env')) {
         if ($key && $value !== null) {
             $key = trim($key);
             $value = trim($value, " \t\n\r\0\x0B\"'");
-            match ($key) {
-                'DB_HOST' => $db_config['host'] = $value,
-                'DB_PORT' => $db_config['port'] = $value,
-                'DB_NAME' => $db_config['database'] = $value,
-                'DB_USER' => $db_config['username'] = $value,
-                'DB_PASS' => $db_config['password'] = $value,
-                default => null,
-            };
+            
+            if ($key === 'DB_URI' || $key === 'DATABASE_URL') {
+                $parsed = parse_url($value);
+                if ($parsed) {
+                    if (!empty($parsed['host'])) $db_config['host'] = $parsed['host'];
+                    if (!empty($parsed['port'])) $db_config['port'] = (string)$parsed['port'];
+                    if (!empty($parsed['user'])) $db_config['username'] = $parsed['user'];
+                    if (!empty($parsed['pass'])) $db_config['password'] = $parsed['pass'];
+                    if (!empty($parsed['path'])) $db_config['database'] = ltrim($parsed['path'], '/');
+                }
+            } else {
+                match ($key) {
+                    'DB_HOST' => $db_config['host'] = $value,
+                    'DB_PORT' => $db_config['port'] = $value,
+                    'DB_NAME' => $db_config['database'] = $value,
+                    'DB_USER' => $db_config['username'] = $value,
+                    'DB_PASS' => $db_config['password'] = $value,
+                    default => null,
+                };
+            }
         }
     }
 }
