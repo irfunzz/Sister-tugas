@@ -322,15 +322,18 @@
         async function quickLogin(username) {
             document.getElementById('login-ident').value = username;
             document.getElementById('login-pass').value = 'password123';
-            document.getElementById('login-form').dispatchEvent(new Event('submit'));
+            await doLogin(username, 'password123');
         }
 
         async function submitLogin(e) {
-            e.preventDefault();
-            const ident = document.getElementById('login-ident').value;
+            if (e) e.preventDefault();
+            const ident = document.getElementById('login-ident').value.trim();
             const pass = document.getElementById('login-pass').value;
-            showError('');
+            await doLogin(ident, pass);
+        }
 
+        async function doLogin(ident, pass) {
+            showError('');
             try {
                 const res = await fetch('api/auth.php?action=login', {
                     method: 'POST',
