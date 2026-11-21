@@ -51,7 +51,8 @@ function get_db(): PDO {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::ATTR_TIMEOUT => 5,
+            PDO::ATTR_TIMEOUT => 10,
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
         ];
         $pdo = new PDO($dsn, $db_config['username'], $db_config['password'], $options);
     }
