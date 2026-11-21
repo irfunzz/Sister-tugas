@@ -1,0 +1,13 @@
+# Environment & Secret files
+.env
+
+# Local database backups generated on desktop PC
+backup-storage/backups/*.sql
+!backup-storage/backups/.gitkeep
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
